@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="#">
+  <link rel="stylesheet" href="./style/iframeSlider.css">
+  <link rel="stylesheet" href="./fontello-c7997974/css/animation.css">
+
+  <link rel="stylesheet" href="./style/buttonsStyle.css">
+  <script async src="https://unpkg.com/es-module-shims@1.7.3/dist/es-module-shims.js">
+    // This is added to make it work in all browsers
+  </script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.132.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.132.0/examples/jsm/",
+        "mindar-face-three":"https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-face-three.prod.js",
+        "loadgltf":"../../../libs/loader.js",   
+        "gltfloader": "https://unpkg.com/three@0.132.0/examples/jsm/loaders/GLTFLoader.js"
+      }
+    }
+</script>
+  <script src="./scripts/main.js" type="module"></script>
+  <style>
+    html,
+    body {
+      position: relative;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #secondDiv {
+      height: 400px;
+      width: 400px;
+      position: relative;
+      overflow: hidden;
+      margin-left: 30px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .checkboxDiv {
+      overflow: auto;
+      /* Clear float */
+    }
+
+    .gltfCheckBoxes {
+      float: left;
+      width: 160px;
+      border:solid;
+      /* or any other width you prefer */
+    }
+
+    .delete-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .confirm-box {
+      z-index: 1;
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-100%);
+      display: none;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="forCapture"  hidden></canvas>
+  <div class="container" id="ar-div">
+
+    <div id="firstDiv" class="div_group">
+
+      <div>
+        <div class="slideshow-container">
+
+
+
+          <div class="mySlides fade">
+            <div class="numbertext">1 / 4</div>
+            <img class="clickImage" id="click-glasses1" src="./models/glasses1/thumbnail.png" width="640" height="360">
+            <br>
+            <div class="text" style="color: black;">1 - Glasses_1</div>
+          </div>
+
+          <div class="mySlides fade">
+            <div class="numbertext">2 / 4</div>
+            <img class="clickImage" id="click-glasses2" src="./models/glasses2/thumbnail.png" width="640" height="360">
+            <br>
+            <div class="text" style="color: black;">2 - Glasses_2</div>
+          </div>
+
+          <div class="mySlides fade">
+            <div class="numbertext">3 / 4</div>
+            <img class="clickImage" id="click-hat1" src="./models/hat1/thumbnail.png" width="640" height="360">
+            <br>
+            <div class="text" style="color: black;">3 - Hat_1</div>
+          </div>
+
+          <div class="mySlides fade">
+            <div class="numbertext">4 / 4</div>
+            <img class="clickImage" id="click-hat2" src="./models/hat2/thumbnail.png" width="640" height="360">
+            <br>
+            <div class="text" style="color: black;">4 - Hat_2</div>
+          </div>
+
+
+
+
+          <a class="prev" style="color: red;" onclick="plusSlides(-1)">❮</a>
+          <a class="next" style="color: red;" onclick="plusSlides(1)">❯</a>
+
+        </div>
+        <br>
+
+        <div style="text-align:center">
+          <span class="dot" onclick="currentSlide(1)"></span>
+          <span class="dot" onclick="currentSlide(2)"></span>
+          <span class="dot" onclick="currentSlide(3)"></span>
+          <span class="dot" onclick="currentSlide(4)"></span>
+
+        </div>
+
+        <script src="./scripts/iframe.js"></script>
+      </div>
+
+      <div class="checkboxDiv" >
+      </div>
+    </div>
+
+    <div class="visible" id="secondDiv">
+
+
+    </div>
+    <button id="capture">Take A Picture</button>
+    <div id="thirdDiv">
+
+      <nav>
+        <ul class="nav">
+
+          <li><a href="#" class="playButton" id="button-left"><span class="icon-left-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-right"><span class="icon-right-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-up"><span class="icon-up-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-down"><span class="icon-down-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-refresh"><span class="icon-cw"></span></a></li>
+          <span>Rotation Value:</span><input id="rotationValue" type="text" value="0.05">
+        </ul>
+      </nav>
+
+    </div>
+    <div id="forthDiv">
+      <nav>
+        <ul class="nav">
+
+          <li><a href="#" class="playButton" id="button-leftMove"><span class="icon-left-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-rightMove"><span class="icon-right-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-upMove"><span class="icon-up-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-downMove"><span class="icon-down-dir"></span></a></li>
+          <li><a href="#" class="playButton" id="button-inMove">IN</a></li>
+          <li><a href="#" class="playButton" id="button-outMove">OUT</a></li>
+          <li><span>Move Value:</span><input id="moveValue" type="text" value="0.01"></li>
+
+
+        </ul>
+      </nav>
+
+    </div>
+    <div id="forthDiv">
+      <nav>
+        <ul class="nav">
+
+         
+          <li><a href="#" class="playButton" id="button-minus"><span style="font-size: 50px;">-</span></a></li>
+          <li><a href="#" class="playButton" id="button-plus"><span style="font-size: 50px;">+</span></a></li>
+          <li><span>Scale Value:</span><input id="scaleValue" type="text" value="0.00025"></li>
+
+        </ul>
+      </nav>
+
+    </div>
+
+  </div>
+
+
+
+  
+</body>
+
+</html>
